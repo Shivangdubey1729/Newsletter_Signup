@@ -11,6 +11,8 @@ const request = require("request");
 
  app.use(express.static("public")); // to use files other than the html file
 
+ require('dotenv').config();
+ 
 
  app.get("/",function (req,res){
     res.sendFile(__dirname + "/signup.html");
@@ -37,15 +39,17 @@ const request = require("request");
       ]
      }
 
+
      const jsonData = JSON.stringify(data);
+   
+      const url =  process.env.URL ;
+      const author = "shivang1:" + process.env.API_KEY ;
 
-     const url = "https://us17.api.mailchimp.com/3.0/lists/c4fdb3598d" ;
-
-     const options = {
-      method : "POST",
-      auth :"shivang1:4ce07382d56e6da3cb3ff481a413230d-us17"
-     }
-     const request =  https.request(url, options, function(response){
+      const options = {
+       method : "POST",
+       auth : author ,
+      }
+       const request =  https.request(url, options, function(response){
 
        if(response.statusCode === 200){
          res.sendFile( __dirname + "/success.html");
@@ -62,6 +66,7 @@ const request = require("request");
         })
 
      })
+
      request.write(jsonData);
      request.end();
    });
